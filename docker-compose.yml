@@ -1,0 +1,74 @@
+version: "3.7"
+services:
+
+  homeassistant:
+    container_name: ha_stable
+    image: homeassistant/home-assistant:stable
+    init: true
+    volumes:
+      - /home/brandon/docker_data/homeassistant:/config
+    network_mode: "host"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver
+
+  nodered:
+    container_name: nr_latest
+    image: nodered/node-red:latest
+    volumes:
+      - /home/brandon/docker_data/nodered:/data
+    ports:
+      - "1880:1880"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver
+
+  mosquitto:
+    container_name: mq_latest
+    image: eclipse-mosquitto:latest
+    volumes:
+     - /home/brandon/docker_data/mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+     - /home/brandon/docker_data/mosquitto/data:/mosquitto/data
+     - /home/brandon/docker_data/mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Denver
+
+  postgres:
+    container_name: pqsl_latest
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - /home/brandon/docker_data/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=ski25switch
+    ports:
+      - "5432:5432"
+
+   pgadmin:
+    container_name: pgadmin_latest
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    volumes:
+      - /home/brandon/docker_data/pgadmin:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=bmutari@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=ski25switch
+    ports:
+      - "5050:80"
+    user: 5050:5050
+    depends_on:
+      - postgres
+
+  deepstack:
+    container_name: deepstackai
+    image: deepquestai/deepstack
+    restart: unless-stopped
+    volumes:
+      - /home/brandon/docker_data/deepstack:/datastore
+    environment:
+      - VISION-DETECTION=True
+    ports:
+      - "83:5000"
