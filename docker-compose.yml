@@ -43,7 +43,7 @@ services:
     volumes:
       - /home/brandon/docker_data/postgres:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=ski25switch
+      - POSTGRES_PASSWORD=stuff
     ports:
       - "5432:5432"
 
@@ -54,8 +54,8 @@ services:
     volumes:
       - /home/brandon/docker_data/pgadmin:/var/lib/pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=bmutari@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=ski25switch
+      - PGADMIN_DEFAULT_EMAIL=stuff
+      - PGADMIN_DEFAULT_PASSWORD=stuff
     ports:
       - "5050:80"
     user: 5050:5050
